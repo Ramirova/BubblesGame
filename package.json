@@ -1,0 +1,25 @@
+{
+  "name": "scalanimate",
+  "version": "1.0.0",
+  "description": "An educational tool intended for people who want to discover Scala in an interactive way!",
+  "main": "fastoptjs-scalanimate.js",
+  "dependencies": {
+    "canvas-prebuilt": "^1.6.5-prerelease.1",
+    "jsdom": "^11.3.0",
+    "jsdom-global": "^3.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xavierpantet/scalanimate.git"
+  },
+  "author": "Xavier Pantet",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xavierpantet/scalanimate/issues"
+  },
+  "homepage": "https://github.com/xavierpantet/scalanimate#readme"
+}
