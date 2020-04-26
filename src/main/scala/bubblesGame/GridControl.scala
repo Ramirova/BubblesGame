@@ -2,8 +2,6 @@ package bubblesGame
 
 import doodle.core.Color
 
-case class GridLocation(row: Int, column: Int)
-
 case class GridControl(screenWidth: Int, ballRadius: Double) {
 
   val emptyLinesAllowed = 16
@@ -12,6 +10,18 @@ case class GridControl(screenWidth: Int, ballRadius: Double) {
     val (rows, columns) = calculateGridSize(screenWidth)
     Vector.tabulate(rows, columns)(getBubbleInGrid(columns, rows))
   }
+
+  private def calculateGridSize(screenWidth: Int): (Int, Int) = {
+    val columns = screenWidth / ballRadius / 2
+    val rows = columns / 3
+    (rows.toInt + emptyLinesAllowed, columns.toInt)
+  }
+
+  private def getBubbleInGrid(gridWidth: Int, gridHeight: Int)(row: Int, column: Int): Option[Bubble] = {
+    if (row >= (gridHeight - emptyLinesAllowed) || (row % 2 != 0 & column == (gridWidth - 1))) return None
+    Option(Bubble(row, column, radius = ballRadius))
+  }
+
 
   def findHittingBubble(x: Double, y: Double): Option[Bubble] = {
     val row = Math.floor(y / 2).toInt / ballRadius.toInt
@@ -31,17 +41,6 @@ case class GridControl(screenWidth: Int, ballRadius: Double) {
       grid = grid.updated(gridLocation.row, grid(gridLocation.row).updated(gridLocation.column, Option(newBubble)))
       Option(newBubble)
     } else { None }
-  }
-
-  private def calculateGridSize(screenWidth: Int): (Int, Int) = {
-    val columns = screenWidth / ballRadius / 2
-    val rows = columns / 3
-    (rows.toInt + emptyLinesAllowed, columns.toInt)
-  }
-
-  private def getBubbleInGrid(gridWidth: Int, gridHeight: Int)(row: Int, column: Int): Option[Bubble] = {
-    if (row >= (gridHeight - emptyLinesAllowed) || (row % 2 != 0 & column == (gridWidth - 1))) return None
-    Option(Bubble(row, column, radius = ballRadius))
   }
 
   def getNeighbours(bubble: Bubble): Vector[Bubble] = {

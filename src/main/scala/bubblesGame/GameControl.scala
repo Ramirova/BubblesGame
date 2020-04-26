@@ -7,7 +7,6 @@ case class GameControl(screenWidth: Int) {
   val ballRadius = 20.0
   val minimumBubblesToBlow = 3
   var indicator = 0
-
   val gridControl: GridControl = GridControl(screenWidth, ballRadius)
 
   def checkHit(x: Double, y: Double, color: Color): Boolean = {
@@ -21,7 +20,7 @@ case class GameControl(screenWidth: Int) {
     false
   }
 
-  def handleHit(x: Double, y: Double, toBubble: Bubble, color: Color): Unit = {
+  private def handleHit(x: Double, y: Double, toBubble: Bubble, color: Color): Unit = {
     val hitFromLeftSide = x < toBubble.xCord
     val newBubbleCoordinates = if (hitFromLeftSide) leftHit(toBubble) else rightHit(toBubble)
     val coordinates = flipOfTheWallIfNeeded(newBubbleCoordinates)
@@ -32,7 +31,7 @@ case class GameControl(screenWidth: Int) {
     }
   }
 
-  def flipOfTheWallIfNeeded(gridLocation: GridLocation): GridLocation = {
+  private def flipOfTheWallIfNeeded(gridLocation: GridLocation): GridLocation = {
     if (gridLocation.column < 0) return GridLocation(gridLocation.row, gridLocation.column + 1)
     if (gridLocation.column + 1 > gridControl.grid(0).length) return GridLocation(gridLocation.row, gridLocation.column - 1)
     gridLocation
@@ -41,7 +40,7 @@ case class GameControl(screenWidth: Int) {
   private def rightHit(toBubble: Bubble) = GridLocation(toBubble.row + 1, toBubble.column + (if (toBubble.shifted) 1 else 0))
   private def leftHit(toBubble: Bubble) = GridLocation(toBubble.row + 1, toBubble.column + (if (toBubble.shifted) 0 else -1))
 
-  def blowNeighboursIfNeeded(newBubble: Bubble): Unit = {
+  private def blowNeighboursIfNeeded(newBubble: Bubble): Unit = {
     var toBlow = Vector[Bubble]()
     var reviewed = Vector[Bubble]()
     val blowingColor = newBubble.color
