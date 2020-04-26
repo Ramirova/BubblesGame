@@ -8,7 +8,7 @@ class RectangleTest extends MutableShapeTest {
   rotated.turnLeft(30)
 
   describe("A rectangle"){
-    it("Should return the correct edges vector when aligned"){
+    it("Should return the correct edges vector when aligned") {
       val testedVectors = aligned.getCornerVectors
 
       assert(testedVectors.distinct.size == 4)
@@ -18,7 +18,7 @@ class RectangleTest extends MutableShapeTest {
     }
   }
 
-  it("Should return the correct axis when aligned"){
+  it("Should return the correct axis when aligned") {
     val testedAxis = aligned.getNormalEdgesVectors
 
     assert(testedAxis.distinct.size == 4)
@@ -27,7 +27,7 @@ class RectangleTest extends MutableShapeTest {
     assert(testedAxis.forall(expectedAxis.contains(_)))
   }
 
-  it("Should return the correct axis when rotated"){
+  it("Should return the correct axis when rotated") {
     val testedAxis = rotated.getNormalEdgesVectors
 
     assert(testedAxis.distinct.size == 4)
