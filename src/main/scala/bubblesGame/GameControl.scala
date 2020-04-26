@@ -42,23 +42,27 @@ case class GameControl(screenWidth: Int) {
   private def leftHit(toBubble: Bubble) = GridLocation(toBubble.row + 1, toBubble.column + (if (toBubble.shifted) 0 else -1))
 
   def blowNeighboursIfNeeded(newBubble: Bubble): Unit = {
-    var blowingBubblesCount = 0
+    var toBlow = Vector[Bubble]()
+    var reviewed = Vector[Bubble]()
     val blowingColor = newBubble.color
     checkNeighbours(newBubble)
 
-    if (blowingBubblesCount >= minimumBubblesToBlow) gridControl.blowBubbles()
-    else gridControl.cancelBlowing()
+    if (toBlow.length >= minimumBubblesToBlow) gridControl.blowBubbles(toBlow)
+    else {
+      toBlow = Vector[Bubble]()
+      reviewed = Vector[Bubble]()
+    }
 
     def checkNeighbours(bubble: Bubble): Unit = {
       val neighbours = gridControl.getNeighbours(bubble)
       for (neighbour <- neighbours) {
-        if (neighbour.color == blowingColor && !neighbour.reviewed) {
-          blowingBubblesCount += 1
-          neighbour.willBlow = true
-          neighbour.reviewed = true
+        if (neighbour.color == blowingColor && !reviewed.contains(neighbour)) {
+          toBlow = toBlow :+ neighbour
+          reviewed = reviewed :+ neighbour
           checkNeighbours(neighbour)
+        } else {
+          reviewed = reviewed :+ neighbour
         }
-        neighbour.reviewed = true
       }
     }
   }

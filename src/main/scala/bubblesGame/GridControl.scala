@@ -60,21 +60,12 @@ case class GridControl(screenWidth: Int, ballRadius: Double) {
     result
   }
 
-  def blowBubbles(): Unit = {
+  def blowBubbles(bubbles: Vector[Bubble]): Unit = {
     grid.flatten.collect {
       case Some(bubble) =>
-        bubble.reviewed = false
-        if (bubble.willBlow) {
+        if (bubbles.contains(bubble)) {
           grid = grid.updated(bubble.row, grid(bubble.row).updated(bubble.column, None))
         }
-    }
-  }
-
-  def cancelBlowing(): Unit = {
-    grid.flatten.collect {
-      case Some(bubble) =>
-        bubble.willBlow = false
-        bubble.reviewed = false
     }
   }
 }

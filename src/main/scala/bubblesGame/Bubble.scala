@@ -12,8 +12,6 @@ case class Bubble(row: Int, column: Int, color: Color, radius: Double) {
 
   val yCord: Double = row * radius * 2 + radius
   val shifted: Boolean = row % 2 != 0
-  var willBlow: Boolean = false
-  var reviewed: Boolean = false
 }
 
 object Bubble {
