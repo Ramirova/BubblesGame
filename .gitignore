@@ -1,0 +1,8 @@
+.idea/
+target/
+.DS_Store
+.gitattributes
+node_modules/
+jspm_packages/
+tmp/
+temp/
