@@ -9,6 +9,6 @@ class GameControlTest extends FlatSpec with Matchers {
     val gameControl = GameControl(600)
 
     gameControl.checkHit(100, 100, Color.red) shouldBe true
-    gameControl.checkHit(200, 200, Color.red) shouldBe false
+    gameControl.checkHit(400, 400, Color.red) shouldBe false
   }
 }
