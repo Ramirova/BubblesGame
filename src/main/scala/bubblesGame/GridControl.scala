@@ -48,14 +48,17 @@ case class GridControl(screenWidth: Int, ballRadius: Double) {
     val maxR = grid.length - 1
     val maxC = grid(0).length - 1
     val (r, c) = (bubble.row, bubble.column)
-    if (r > 0 && c > 0 && grid(r - 1)(c - 1).isDefined) { result = result ++ grid(r - 1)(c - 1) }
-    if (r > 0 && grid(r - 1)(c).isDefined) { result = result ++ grid(r - 1)(c) }
-    if (r > 0 && (c + 1 < maxC) && grid(r - 1)(c + 1).isDefined) { result = result ++ grid(r - 1)(c + 1) }
     if (c > 0 && grid(r)(c - 1).isDefined) { result = result ++ grid(r)(c - 1) }
     if (c + 1 < maxC && grid(r)(c + 1).isDefined) { result = result ++ grid(r)(c + 1) }
-    if (r + 1 < maxR && c > 0 & grid(r + 1)(c - 1).isDefined) { result = result ++ grid(r + 1)(c - 1) }
+    if (r > 0 && grid(r - 1)(c).isDefined) { result = result ++ grid(r - 1)(c) }
     if (r + 1 < maxR && grid(r + 1)(c).isDefined) { result = result ++ grid(r + 1)(c) }
-    if (r + 1 < maxR && (c + 1 < maxC) && grid(r + 1)(c + 1).isDefined) { result = result ++ grid(r + 1)(c + 1) }
+    if (bubble.shifted) {
+      if (r + 1 < maxR && (c + 1 < maxC) && grid(r + 1)(c + 1).isDefined) { result = result ++ grid(r + 1)(c + 1) }
+      if (r > 0 && (c + 1 < maxC) && grid(r - 1)(c + 1).isDefined) { result = result ++ grid(r - 1)(c + 1) }
+    } else {
+      if (r + 1 < maxR && c > 0 && grid(r + 1)(c - 1).isDefined) { result = result ++ grid(r + 1)(c - 1) }
+      if (r > 0 && c > 0 && grid(r - 1)(c - 1).isDefined) { result = result ++ grid(r - 1)(c - 1) }
+    }
     result
   }
 
