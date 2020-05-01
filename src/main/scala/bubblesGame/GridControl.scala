@@ -6,6 +6,7 @@ case class GridControl(screenWidth: Int, ballRadius: Double) {
 
   val emptyLinesAllowed = 16
 
+  // Grid state
   var grid: Vector[Vector[Option[Bubble]]] = {
     val (rows, columns) = calculateGridSize(screenWidth)
     Vector.tabulate(rows, columns)(getBubbleInGrid(columns, rows))

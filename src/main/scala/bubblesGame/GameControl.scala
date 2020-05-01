@@ -48,8 +48,7 @@ case class GameControl(screenWidth: Int) {
     if (toBlow.length >= minimumBubblesToBlow) gridControl.blowBubbles(toBlow)
 
     def checkNeighbours(bubble: Bubble): Unit = {
-      val neighbours = gridControl.getNeighbours(bubble)
-      for (neighbour <- neighbours) {
+      gridControl.getNeighbours(bubble).foreach { neighbour =>
         if (neighbour.color == blowingColor && !reviewed.contains(neighbour)) {
           toBlow = toBlow :+ neighbour
           reviewed = reviewed :+ neighbour

@@ -9,13 +9,12 @@ import drawing.shapes.mutable.{Background, Circle, Image, Oval, Rectangle}
 import drawing.core.TimeControls._
 
 object BubblesGame extends Helper {
+  case class BallAcceleration(dx: Double, dy: Double)
 
   // Constants
   val updateRate = 20
   val ballToEdgesMargin = 5
   val ballSpeedRate = 12
-
-  case class BallAcceleration(dx: Double, dy: Double)
 
   val gameControl: GameControl = GameControl(width)
 
@@ -34,7 +33,6 @@ object BubblesGame extends Helper {
 
     // Game process
     every(updateRate.milliseconds){_ => {
-
       if (gameControl.checkHit(ball.center._1, ball.center._2, ball.fillColor)) {
         canvas.shapes.remove(ball)
         ball.hide()
@@ -45,13 +43,11 @@ object BubblesGame extends Helper {
       }
 
       if (ballFlies) { acceleration = moveBall(ball, acceleration) }
-
       else { // Direction calibration
         if (canvas.keysDown.contains(ArrowLeft)) { bar.turnLeft(1) }
         if (canvas.keysDown.contains(ArrowRight)) { bar.turnRight(1) }
         acceleration = BallAcceleration(Math.sin(bar.angle.toRadians), -Math.cos(bar.angle.toRadians))
       }
-
       if (canvas.keysDown.contains(Spacebar)) ballFlies = true
     }}
   }
@@ -80,13 +76,10 @@ object BubblesGame extends Helper {
   }
 
   def moveBall(ball: Oval, acceleration: BallAcceleration): BallAcceleration = {
-    var dx = acceleration.dx
-    var dy = acceleration.dy
-
-    if (ball.touchesEdge) {
-      if (ball.y <= ballToEdgesMargin || ball.y >= height - ballToEdgesMargin) { dy = -dy }
-      if (ball.x <= ballToEdgesMargin || ball.x >= width - ballToEdgesMargin) { dx = -dx }
-    }
+    val dy = if (ball.touchesEdge && (ball.y <= ballToEdgesMargin || ball.y >= height - ballToEdgesMargin))
+      -acceleration.dy else acceleration.dy
+    val dx = if (ball.touchesEdge && (ball.x <= ballToEdgesMargin || ball.x >= width - ballToEdgesMargin))
+      -acceleration.dx else acceleration.dx
 
     ball.move(dx * ballSpeedRate, dy * ballSpeedRate)
     BallAcceleration(dx, dy)
