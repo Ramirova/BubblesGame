@@ -40,21 +40,20 @@ case class GameControl(screenWidth: Int) {
   private def leftHit(toBubble: Bubble) = GridLocation(toBubble.row + 1, toBubble.column + (if (toBubble.shifted) 0 else -1))
 
   private def blowNeighboursIfNeeded(newBubble: Bubble): Unit = {
-    var toBlow = Vector[Bubble]()
-    var reviewed = Vector[Bubble]()
     val blowingColor = newBubble.color
-    checkNeighbours(newBubble)
+    lazy val (toBlow, _) = checkNeighbours(newBubble, List.empty, List.empty)
 
-    if (toBlow.length >= minimumBubblesToBlow) gridControl.blowBubbles(toBlow)
+    if (toBlow.length >= minimumBubblesToBlow) gridControl.blowBubbles(toBlow.toVector)
 
-    def checkNeighbours(bubble: Bubble): Unit = {
-      gridControl.getNeighbours(bubble).foreach { neighbour =>
+    def checkNeighbours(bubble: Bubble, toBlow: List[Bubble], reviewed: List[Bubble]): (List[Bubble], List[Bubble]) = {
+      val neighbours = gridControl.getNeighbours(bubble)
+      neighbours.foldLeft((toBlow, reviewed)) { (acc, neighbour) =>
+        val (blow, rev) = acc
         if (neighbour.color == blowingColor && !reviewed.contains(neighbour)) {
-          toBlow = toBlow :+ neighbour
-          reviewed = reviewed :+ neighbour
-          checkNeighbours(neighbour)
+          val (blowU, revU) = checkNeighbours(neighbour, List(neighbour), neighbour :: rev)
+          (blow ++ blowU, rev ++ revU)
         } else {
-          reviewed = reviewed :+ neighbour
+          (blow, neighbour :: rev)
         }
       }
     }
