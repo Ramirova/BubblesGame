@@ -42,10 +42,6 @@ object BubblesGame extends Helper {
         clearGrid(grid)
         drawGrid()
         ballFlies = false
-
-        val b = gameControl.indicator
-        val indicator = Circle(50, 50, b * 10)
-        indicator.fillColor = Color.red
       }
 
       if (ballFlies) { acceleration = moveBall(ball, acceleration) }

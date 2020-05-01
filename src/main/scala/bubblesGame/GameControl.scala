@@ -6,7 +6,6 @@ case class GameControl(screenWidth: Int) {
 
   val ballRadius = 20.0
   val minimumBubblesToBlow = 3
-  var indicator = 0
   val gridControl: GridControl = GridControl(screenWidth, ballRadius)
 
   def checkHit(x: Double, y: Double, color: Color): Boolean = {
